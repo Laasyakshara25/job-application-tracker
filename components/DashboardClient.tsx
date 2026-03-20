@@ -5,7 +5,6 @@ import { signOut } from "next-auth/react";
 import { format } from "date-fns";
 import { 
   Building2, 
-  MapPin, 
   Calendar, 
   Search, 
   Filter, 
@@ -25,7 +24,22 @@ const statusColors: Record<string, string> = {
   Rejected: "bg-red-100 text-red-700 border-red-200",
 };
 
-export default function DashboardClient({ applications, user }: { applications: any[]; user: any }) {
+interface Application {
+  id: string;
+  company: string;
+  role: string;
+  status: string;
+  notes?: string | null;
+  dateApplied: Date | string;
+}
+
+interface User {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
+
+export default function DashboardClient({ applications, user }: { applications: Application[]; user: User }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,6 +72,7 @@ export default function DashboardClient({ applications, user }: { applications: 
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             {user.image && <img src={user.image} alt="Avatar" className="w-8 h-8 rounded-full border border-gray-200" />}
             <span className="text-sm font-medium text-gray-700 hidden sm:block">{user.name}</span>
           </div>
